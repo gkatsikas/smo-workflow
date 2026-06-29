@@ -5,11 +5,12 @@
 hide footbox
 !pragma teoz true
 
-skinparam backgroundColor white
+skinparam BackgroundColor white
 skinparam DefaultFontName Calibri
-skinparam DefaultFontSize 18
+skinparam DefaultFontSize 20
 skinparam SequenceMessageFontSize 14
 skinparam SequenceMessageAlign center
+skinparam MaxMessageSize 380
 
 skinparam sequence {
     ArrowColor black
@@ -25,10 +26,10 @@ skinparam sequence {
     GroupFontStyle bold
 }
 
-!define SMO_BOX_COLOR Application
+!define SMO_BOX_COLOR LightGrey
 !define SMO_BLOCK_COLOR FFFFFF
 
-!define DATA_PLANE_BOX_COLOR LightGrey
+!define DATA_PLANE_BOX_COLOR Application
 !define DATA_PLANE_BLOCK_COLOR F0F0F0
 
 !define OTHER_COLOR D6DCE5
@@ -51,10 +52,10 @@ box "<img:https://raw.githubusercontent.com/gkatsikas/smo-workflow/refs/heads/ma
 end box
 
 group <size:20> Initial RAN and Transport Deployment
-    Operator --> UI: Request RAN Functional Split (FS) service\nand Transport Network (TN) configuration
+    Operator --> UI: Request RAN Functional Split (FS) service and Transport Network (TN) configuration
     UI -> NBI:
-    NBI -> HypO: TMF-based request for FS deployment
-    HypO -> RAN: Instantiate software RAN components of desired FS
+    NBI -> HypO: TMF-based request\nfor FS deployment
+    HypO -> RAN: Instantiate software RAN\ncomponents of desired FS
     NBI -> TFS: IETF-based TN slice request to support the deployed FS
     TFS -> RAN: Configure TN
     RAN -> MON: Publish periodic FS telemetry data
@@ -63,21 +64,21 @@ group <size:20> Initial RAN and Transport Deployment
 end
 
 group <size:20> rApp Deployment and Metric Exposure
-    Operator --> UI: Request policy-driven rApp deployment
+    Operator --> UI: Request policy-driven\nrApp deployment
     UI -> NBI:
     NBI -> HypO: Onboard and deploy rApp through standards-based NBIs
-    HypO -> RAPP: Instantiate rApp on a control plane cluster node
-    RAPP -> MON: Subscribe to relevant metrics based on policy
+    HypO -> RAPP: Instantiate rApp on a control\nplane cluster node
+    RAPP -> MON: Subscribe to relevant\nmetrics based on policy
 end
 
 group <size:20> Closed-loop Adaptation
-    RAPP -> RAPP: Evaluate metrics\nagainst policy
+    RAPP -> RAPP: Evaluate metrics against policy
     RAPP -> NBI: Trigger adaptation request
     NBI -> HypO: Deploy new FS service
-    HypO -> RAN: Instantiate software RAN components of new FS
+    HypO -> RAN: Instantiate software RAN\ncomponents of new FS
     HypO -> RAN: De-activate new FS service
     NBI -> HypO: Tear old FS service down
-    HypO -> RAN: Deprovision software RAN components of old FS
+    HypO -> RAN: Deprovision software RAN\ncomponents of old FS
     NBI -> TFS: Update TN slice to accommodate the new FS
     HypO -> RAN: Activate new FS service
     NBI -> UI: Update FS service and TN slice
